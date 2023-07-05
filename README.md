@@ -1,7 +1,23 @@
-# Git: Combining two files into one while preserving line history
+# Git: Combining two files into one while preserving blame history
 
 [Mundane git tricks: Combining two files into one while preserving line history
 ](https://devblogs.microsoft.com/oldnewthing/20190514-00/?p=102493)
+
+## scripts
+
+`merge-two-files.sh` automates the process of merging two files. It takes three arguments: the names of the two files to be merged, and the name of the file to be created to receive the concatenated contents of the first two files. It assumes that the file to be created does not exist, and that the files to be merged into it do exist. The process preserves the blame history of the merged files.
+
+```
+git-tricks-merge-files % merge-two-files.sh
+no such file:
+usage: merge-two-files.sh <first-file> <second-file> <third-file>
+       This script merges the contents of <first-file> and <second-file> into a <third-file>.
+       The first two arguments specify the input files, and the third
+       argument specifies the output file.
+```
+
+`create-sample-repo.sh` creates a sample repository with a history that demonstrates the technique. It creates a repository with a single file, `fruits`, and then creates a series of commits that rename the file to `veggies`, and then back to `fruits`. It then creates a `produce` file by merging the `fruits` and `veggies` files.
+It should be run in an empty directory, e.g. `mkdir sample-repo && cd sample-repo && ../create-sample-repo.sh`.
 
 ## the article
 
@@ -155,19 +171,3 @@ cfce62ae veggies (David 2019-05-14 07:00:03 -0700 3) celery
 ```
 
 For best results, your rename commit should be a pure rename. Resist the tempotation to edit the file’s contents at the same time you rename it. A pure rename ensure that git’s rename detection will find the match. If you edit the file in the same commit as the rename, then whether the rename is detected as such will depend on git’s “similar files” heuristic.¹ If you need to edit the file as well as rename it, do it in two separate commits: One for the rename, another for the edit.
-
-## scripts
-
-`merge-two-files.sh` automates the process of merging two files. It takes two arguments: the name of the file to be created, and the name of the file to be merged into it. It assumes that the file to be created does not exist, and that the file to be merged into it do exist. The process preserves the blame history of the merged files.
-
-```
-git-tricks-merge-files % merge-two-files.sh
-no such file:
-usage: merge-two-files.sh <first-file> <second-file> <third-file>
-       This script merges the contents of <first-file> and <second-file> into a <third-file>.
-       The first two arguments specify the input files, and the third
-       argument specifies the output file.
-```
-
-`create-sample-repo.sh` creates a sample repository with a history that demonstrates the technique. It creates a repository with a single file, `fruits`, and then creates a series of commits that rename the file to `veggies`, and then back to `fruits`. It then creates a `produce` file by merging the `fruits` and `veggies` files.
-It should be run in an empty directory, e.g. `mkdir sample-repo && cd sample-repo && ../create-sample-repo.sh`.
