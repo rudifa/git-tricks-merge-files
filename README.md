@@ -1,4 +1,4 @@
-# Git: Combining two files into one while preserving blame history
+# Git: Combining two files into one while preserving blame history by Raymond Chen
 
 [Mundane git tricks: Combining two files into one while preserving line history
 ](https://devblogs.microsoft.com/oldnewthing/20190514-00/?p=102493)
